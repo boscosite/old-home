@@ -103,14 +103,14 @@ var _hmt = _hmt || [];
 <pre id="code2" class="ace_editor" style="height:470px; clear:both;"><textarea name="c" id="c" class="ace_text-input">
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
 <title>Html5+css3+js online transport tool</title>
-<link rel="stylesheet" type="text/css" href="http://#" />         <!--可引用外部css-->
-<script type="text/javascript" src="http://#" ></script>          <!--可引用外部JS，以及jquery等库-->
-                                                                  <!-- 各种JS库的引用地址：www.bootcdn.cn -->
+<link rel="stylesheet" type="text/css" href="http://#" />         <!-- Can reference external css -->
+<script type="text/javascript" src="http://#" ></script>          <!-- External JS, jquery and other libraries can be referenced -->
+                                                                  <!--  Reference addresses of various JS libraries: www.bootcdn.cn -->
 <script>
-        /* 自写js */
+        /*Self-written js*/
 </script>
 <style>
-        /* 自写css */
+        /*Self-written js*/
 </style>
 
 </head>
@@ -154,14 +154,13 @@ var _hmt = _hmt || [];
 <div style="position: absolute; left:50%; text-align:center; width:250px; overflow:hidden; color:#88c5f9; text-shadow:-1px 1px 0px rgba(0, 0, 0, 1); font-size:14px; margin:5px 20px 0 -125px;">由zouni.run提供技术支持 ^_^</div>
 </div>
 <div id="result">
-<h2>查看结果:</h2>
-<p><span><input name="button" type="button" onclick="newWin()" value="新窗口打开"></input></span></p>
+<h2>View results:</h2>
+<p><span><input name="button" type="button" onclick="newWin()" value="Opens in new window"></input></span></p>
 <iframe name="i" id="i" src=""></iframe>
 </div>
 
 </div>
 <div style="position:fixed; bottom:5px; margin:0 auto; width:100%;text-align:center;color:#88c8ff; text-shadow:-1px 1px 0px rgb(0, 0, 0); font-size:20px;">代码运行器</div>
-<button type="button"><a href="https://bosco163.github.io/more/play" style="text-decoration: none;">好玩的</button>
 </body>
 </html>
 <script type="text/javascript">
@@ -201,7 +200,7 @@ function runCode() {
 //obj = document.getElementById("c").innerHTML;  //可获取任何内容
 var obj = editor.getValue();
 if(obj==""){
-alert("请输入要运行的代码内容");
+alert("Please enter the code content to run");
 return false;}
 var winname = document.getElementById("i").contentWindow;
 winname.document.open('text/html', 'replace');
@@ -215,7 +214,7 @@ function newWin() {
 //obj = document.getElementById("c"); 
 var obj = editor.getValue();
 if(obj==""){
-alert("请输入要运行的代码内容");
+alert("Please enter the code content to run");
 return false;}
 var newWin = window.open('','','');
 newWin.opener = null; // 防止代码对论谈页面修改
