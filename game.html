@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>3D City</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    #canvas {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="canvas"></div>
+
+  <script>
+    // 创建场景、摄像机和渲染器
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    var renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById("canvas").appendChild(renderer.domElement);
+
+    // 创建地面材质
+    var groundMaterial = new THREE.MeshBasicMaterial({ color: 0x808080 });
+
+    // 创建地面几何体
+    var groundGeometry = new THREE.PlaneGeometry(1000, 1000);
+
+    // 创建地面网格，并将其添加到场景中
+    var groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
+    groundMesh.rotation.x = -Math.PI / 2; // 将地面置于水平面上
+    scene.add(groundMesh);
+
+    // 创建建筑材质
+    var buildingMaterial = new THREE.MeshBasicMaterial({ color: 0xdddddd });
+
+    // 创建建筑几何体
+    var buildingGeometry = new THREE.BoxGeometry(50, 50, 50);
+
+    // 在场景中随机放置多个建筑物
+    for (var i = 0; i < 10; i++) {
+      var buildingMesh = new THREE.Mesh(buildingGeometry, buildingMaterial);
+      buildingMesh.position.set(
+        Math.random() * 800 - 400,
+        25,
+        Math.random() * 800 - 400
+      );
+      scene.add(buildingMesh);
+    }
+
+    // 创建玩家材质
+    var playerMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+
+    // 创建玩家几何体
+    var playerGeometry = new THREE.BoxGeometry(20, 40, 20);
+
+    // 创建玩家网格，并将其添加到场景中
+    var playerMesh = new THREE.Mesh(playerGeometry, playerMaterial);
+    playerMesh.position.set(0, 20, 0);
+    scene.add(playerMesh);
+
+    // 设置摄像机位置和朝向
+    camera.position.set(0, 50, 200);
+    camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+    // 定义移动函数
+    function movePlayer(direction) {
+      switch (direction) {
+        case 'w':
+          playerMesh.translateZ(-10);
+          break;
+        case 'a':
+          playerMesh.translateX(-10);
+          break;
+        case 's':
+          playerMesh.translateZ(10);
+          break;
+        case 'd':
+          playerMesh.translateX(10);
+          break;
+      }
+    }
+
+    // 监听键盘keydown事件，开始移动
+    document.addEventListener("keydown", function(event) {
+      switch (event.code) {
+        case "KeyW":
+          movePlayer('w');
+          break;
+        case "KeyA":
+          movePlayer('a');
+          break;
+        case "KeyS":
+          movePlayer('s');
+          break;
+        case "KeyD":
+          movePlayer('d');
+          break;
+      }
+    });
+
+    // 渲染场景
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // 将摄像机位置设置为玩家正上方，并以一定高度俯视玩家
+      camera.position.set(playerMesh.position.x, 100, playerMesh.position.z + 200);
+      camera.lookAt(playerMesh.position); // 将摄像机朝向玩家
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener("resize", function() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+
+</html>
