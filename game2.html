@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>3D地铁跑酷游戏</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/aframe/1.2.0/aframe.min.js"></script>
+    <style>
+      a-scene {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* 显示FPS */
+      .a-enter-vr-button, .a-enter-ar-button {
+        display: none !important;
+      }
+      #fps {
+        position: absolute;
+        z-index: 999;
+        top: 10px;
+        left: 10px;
+        font-size: 20px;
+        color: white;
+        text-shadow: 1px 1px 2px black;
+      }
+    </style>
+  </head>
+  <body>
+    <a-scene physics="debug: false">
+
+      <!-- 加载模型 -->
+      <a-assets>
+        <a-asset-item id="player-model" src="player.glb"></a-asset-item>
+        <a-asset-item id="platform-model" src="platform.glb"></a-asset-item>
+      </a-assets>
+
+      <!-- 创建相机 -->
+      <a-entity id="camera" camera look-controls wasd-controls position="0 2 5"></a-entity>
+
+      <!-- 创建光源 -->
+      <a-entity light="type: directional; color: #FFF; intensity: 0.5" position="-1 1 0"></a-entity>
+      <a-entity light="type: ambient; color: #FFF;"></a-entity>
+
+      <!-- 创建玩家 -->
+      <a-entity id="player" gltf-model="#player-model" position="0 1.5 -1" scale="0.05 0.05 0.05" rotation="0 180 0"
+        dynamic-body player-movement></a-entity>
+
+      <!-- 创建地面 -->
+      <a-entity id="platform" gltf-model="#platform-model" static-body></a-entity>
+
+      <!-- 显示FPS -->
+      <div id="fps"></div>
+      
+    </a-scene>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
+    <script>
+      AFRAME.registerComponent('player-movement', {
+        init: function() {
+          this.speed = 20;
+          this.jumpForce = 10;
+          this.canJump = true;
+
+          // 监听键盘事件，控制玩家移动
+          window.addEventListener('keydown', (event) => {
+            if (event.key === 'a' || event.key === 'A') {
+              this.movePlayer(-this.speed, 0, 0);
+            } else if (event.key === 'd' || event.key === 'D') {
+              this.movePlayer(this.speed, 0, 0);
+            } else if (event.key === 'w' || event.key === 'W') {
+              this.movePlayer(0, 0, -this.speed);
+            } else if (event.key === 's' || event.key === 'S') {
+              this.movePlayer(0, 0, this.speed);
+            } else if ((event.key === ' ' || event.key === 'Spacebar') && this.canJump) {
+              this.jump();
+            }
+          });
+
+          // 监听动态身体碰撞事件
+          this.el.addEventListener('collide', (e) => {
+            if (e.detail.body.el.id === 'platform') {
+              this.canJump = true;
+            }
+          });
+        },
+
+        movePlayer: function(x, y, z) {
+          this.el.object3D.position.x += x / 100;
+          this.el.object3D.position.y += y / 100;
+          this.el.object3D.position.z += z / 100;
+        },
+
+        jump: function() {
+          this.el.body.applyImpulse(new CANNON.Vec3(0, this.jumpForce, 0), new CANNON.Vec3());
+          this.canJump = false;
+        }
+      });
+
+      // 显示FPS
+      setInterval(() => {
+        const fpsText = document.querySelector('#fps');
+        fpsText.innerHTML = `FPS: ${Math.round(AFRAME.scenes[0].renderer.framesPerSecond)}`;
+      }, 1000);
+    </script>
+  </body>
+</html>
