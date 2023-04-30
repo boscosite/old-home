@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tools</title>
+	<style>
+		body {
+			width: 100%;
+			text-align: center;
+			background-color: white;
+			color: black;
+		}
+
+		@media only screen and (min-width: 600px) {
+			body {
+				max-width: 600px;
+				margin: 0 auto;
+			}
+		}
+
+		.sun-icon, .moon-icon, .home-icon {
+			position: absolute;
+			top: 10px;
+			font-size: 25px;
+			cursor: pointer;
+			color: inherit;
+		}
+
+		.home-icon {
+			left: 10px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			border: 2px solid currentColor;
+			color: inherit;
+			background-color: transparent;
+			transition: background-color 0.3s ease-in-out;
+		}
+		
+		.home-icon:hover {
+			background-color: currentColor;
+			color: white;
+		}
+		
+		.home-icon:hover:before {
+			content: "<";
+		}
+		
+		.moon-icon {
+			right: 10px;
+			display: none;
+		}
+		
+		.sun-icon, .moon-icon {
+			color: inherit;
+			transition: color 0.3s ease-in-out;
+		}
+		
+		body.dark-mode {
+			background-color: black;
+			color: white;
+		}
+
+		body.dark-mode .sun-icon {
+			display: none;
+		}
+		
+		body.dark-mode .moon-icon {
+			display: block;
+		}
+
+		body.dark-mode .home-icon {
+			border-color: currentColor;
+			color: white;
+		}
+		
+		body.dark-mode .home-icon:hover {
+			background-color: currentColor;
+			color: black;
+		}
+
+		ol {
+			text-align: left;
+			padding-left: 0;
+		}
+	</style>
+	<script>
+		function toggleDarkMode() {
+			var body = document.getElementsByTagName("body")[0];
+			body.classList.toggle("dark-mode");
+			var sunIcon = document.getElementsByClassName("sun-icon")[0];
+			var moonIcon = document.getElementsByClassName("moon-icon")[0];
+			if (body.classList.contains("dark-mode")) {
+				sunIcon.style.display = "none";
+				moonIcon.style.display = "block";
+			} else {
+				sunIcon.style.display = "block";
+				moonIcon.style.display = "none";
+			}
+		}
+
+		function updateColorScheme() {
+			var now = new Date();
+			if (now.getHours() >= 18 || now.getHours() < 6) {
+				document.getElementsByTagName("body")[0].classList.add("dark-mode");
+				document.getElementsByClassName("sun-icon")[0].style.display = "none";
+				document.getElementsByClassName("moon-icon")[0].style.display = "block";
+			} else {
+				document.getElementsByTagName("body")[0].classList.remove("dark-mode");
+				document.getElementsByClassName("sun-icon")[0].style.display = "block";
+				document.getElementsByClassName("moon-icon")[0].style.display = "none";
+			}
+		}
+
+		updateColorScheme();
+
+		setInterval(function() {
+			updateColorScheme();
+		}, 60 * 1000);
+
+		if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+			toggleDarkMode();
+		}
+		
+		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+			const newColorScheme = e.matches ? "dark-mode" : "";
+			document.getElementsByTagName("body")[0].classList = newColorScheme;
+			var sunIcon = document.getElementsByClassName("sun-icon")[0];
+			var moonIcon = document.getElementsByClassName("moon-icon")[0];
+			if (newColorScheme === "dark-mode") {
+				sunIcon.style.display = "none";
+				moonIcon.style.display = "block";
+			} else {
+				sunIcon.style.display = "block";
+				moonIcon.style.display = "none";
+			}
+		});
+	</script>
+</head>
+<body>
+	<div>
+		<h1>Tools</h1>
+		<ol>
+			<li><a href="https://bosco163.github.io/more/drawing-board">Drawing board</a></li>
+			<li><a href="https://www.online-stopwatch.com/full-screen-stopwatch">Stopwatch</a></li>
+<li><a href="https://bosco163.github.io/more/time-display">Time display</a></li>
+</ol>
+<a class="home-icon" href="https://bosco163.github.io/"><</a>
+<span class="sun-icon" onclick="toggleDarkMode()" style="right: 10px;">☀</span>
+<span class="moon-icon" onclick="toggleDarkMode()" style="right: 10px;">🌙</span>
+</div>
+</body>
+</html>
