@@ -9,22 +9,61 @@
 			background-color: white;
 			color: black;
 		}
+
+		@media only screen and (min-width: 600px) {
+			body {
+				max-width: 600px;
+				margin: 0 auto;
+			}
+		}
+
+		.sun-icon, .moon-icon {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			cursor: pointer;
+			font-size: 25px;
+		}
+		
+		.moon-icon {
+			display: none;
+		}
 		
 		body.dark-mode {
 			background-color: black;
 			color: white;
 		}
+
+		body.dark-mode .sun-icon {
+			display: none;
+		}
+		
+		body.dark-mode .moon-icon {
+			display: block;
+		}
 	</style>
 	<script>
-		if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-			document.body.classList.add('dark-mode');
+		function toggleDarkMode() {
+			var body = document.getElementsByTagName("body")[0];
+			body.classList.toggle("dark-mode");
 		}
+
+		if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+			toggleDarkMode();
+		}
+		
+		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+			const newColorScheme = e.matches ? "dark-mode" : "";
+			document.getElementsByTagName("body")[0].classList = newColorScheme;
+		});
 	</script>
 </head>
 <body>
 	<div>
 		<h1>Language:</h1></br>
 		<a href="https://bosco163.github.io/coderunner/language-english">English</a> | <a href="https://bosco163.github.io/coderunner/language-chinese.html">中文</a>
+		<span class="sun-icon" onclick="toggleDarkMode()">&#9728;</span>
+		<span class="moon-icon" onclick="toggleDarkMode()">&#127769;</span>
 	</div>
 </body>
 </html>
